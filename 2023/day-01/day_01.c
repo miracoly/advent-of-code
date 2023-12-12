@@ -11,6 +11,9 @@
 
 static uint8_t get_calibration_of_line(char line[static 1]);
 
+static uint8_t char_to_int(char c);
+
+
 int main() {
     FILE *file = fopen("./input.txt", "r");
     if (file == NULL) { return EXIT_FAILURE; }
@@ -36,16 +39,18 @@ static uint8_t get_calibration_of_line(char line[static 1]) {
     uint8_t left = 0;
     uint8_t right = 0;
     for (size_t i = 0; i < length; ++i) {
-        if (left && right) { break; }
-
         if (isdigit(line[i]) && !left) {
-            left = line[i] - '0';
+            left = char_to_int(line[i]);
         }
-        if (isdigit(line[length - i - 1]) && !right) {
-            right = line[length - i - 1] - '0';
+        if (isdigit(line[i])) {
+            right = char_to_int(line[i]);
         }
     }
     return (!left || !right)
            ? left + right
            : (left * 10) + right;
+}
+
+static uint8_t char_to_int(char c) {
+    return c - '0';
 }
