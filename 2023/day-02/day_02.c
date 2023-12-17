@@ -31,21 +31,29 @@ static uint8_t get_id_if_valid(const char line[static 1]);
 
 static unsigned int get_power_of_set(const char line[static 1]);
 
-static void add_occurrence(unsigned int target[color_len], const char group[static 1]);
+static unsigned long accumulate_lines(unsigned int acc(char[LINE_LENGTH_MAX]), FILE *file);
 
-static void add_max_occurrence(unsigned int target[color_len], const char group[static 1]);
+static void add_up(unsigned int target[color_len], color_t color, unsigned int count);
+
+static void put_max(unsigned int target[color_len], color_t color, unsigned int count);
+
+static void do_with_occurrence(
+        void handler(int[], color_t, int),
+        unsigned int target[color_len],
+        const char group[static 1]
+);
 
 static void remove_new_line(size_t max_len, char str[static max_len]);
 
 int main(void) {
     FILE *file1 = fopen("./input.txt", "r");
-    if (file1 == NULL) return EXIT_FAILURE;
-    printf("Sum valid IDs: %lu\n", get_sum_of_valid_ids(file1));
-    fclose(file1);
-
     FILE *file2 = fopen("./input.txt", "r");
-    if (file2 == NULL) return EXIT_FAILURE;
-    printf("Sum Power: %lu\n", get_power_of_sets(file2));
+    if (!file1 || !file2) return EXIT_FAILURE;
+
+    printf("Sum valid IDs: %lu\n", accumulate_lines(&get_id_if_valid, file1));
+    printf("Sum Power: %lu\n", accumulate_lines(&get_power_of_set, file2));
+
+    fclose(file1);
     fclose(file2);
 
     return EXIT_SUCCESS;
@@ -58,24 +66,14 @@ static color_t find_color(const char name[static 1]) {
     return color_len;
 }
 
-unsigned long get_sum_of_valid_ids(FILE *file) {
-    unsigned long sum_ids = 0;
+static unsigned long accumulate_lines(unsigned int acc(char[LINE_LENGTH_MAX]), FILE *file) {
+    unsigned long result = 0;
     while (!feof(file)) {
         char line[LINE_LENGTH_MAX];
         fgets(line, LINE_LENGTH_MAX, file);
-        sum_ids += get_id_if_valid(line);
+        result += (*acc)(line);
     }
-    return sum_ids;
-}
-
-unsigned long get_power_of_sets(FILE *file) {
-    unsigned long sum_ids = 0;
-    while (!feof(file)) {
-        char line[LINE_LENGTH_MAX];
-        fgets(line, LINE_LENGTH_MAX, file);
-        sum_ids += get_power_of_set(line);
-    }
-    return sum_ids;
+    return result;
 }
 
 static uint8_t get_id_if_valid(const char line[static 1]) {
@@ -96,7 +94,7 @@ static uint8_t get_id_if_valid(const char line[static 1]) {
 
     for (size_t i = 0; i < group_count; ++i) {
         unsigned int occurrence[color_len] = {0};
-        add_occurrence(occurrence, groups[i]);
+        do_with_occurrence(&add_up, occurrence, groups[i]);
         for (color_t c = 0; c < color_len; ++c) {
             if (occurrence[c] > max_quantity[c]) return 0;
         }
@@ -123,7 +121,7 @@ static unsigned int get_power_of_set(const char line[static 1]) {
 
     unsigned int occurrence[color_len] = {0};
     for (size_t i = 0; i < group_count; ++i) {
-        add_max_occurrence(occurrence, groups[i]);
+        do_with_occurrence(&put_max, occurrence, groups[i]);
     }
 
     long power = 1;
@@ -134,34 +132,31 @@ static unsigned int get_power_of_set(const char line[static 1]) {
     return power;
 }
 
-static void add_occurrence(unsigned int target[color_len], const char group[static 1]) {
-    char group_copy[GROUP_LENGTH_MAX];
-    strncpy(group_copy, group, GROUP_LENGTH_MAX);
+static void add_up(unsigned int target[color_len], color_t color, unsigned int count) {
+    target[color] += count;
+}
 
-    char *word = strtok(group_copy, " ");
-    while (word != NULL) {
-        const int count = atoi(word);
-        word = strtok(NULL, ", ");
-        remove_new_line(6, word);
-        const color_t color = find_color(word);
-        target[color] += count;
-        word = strtok(NULL, " ");
+static void put_max(unsigned int target[color_len], color_t color, unsigned int count) {
+    if (count > target[color]) {
+        target[color] = count;
     }
 }
 
-static void add_max_occurrence(unsigned int target[color_len], const char group[static 1]) {
+static void do_with_occurrence(
+        void handler(int[], color_t, int),
+        unsigned int target[color_len],
+        const char group[static 1]
+) {
     char group_copy[GROUP_LENGTH_MAX];
     strncpy(group_copy, group, GROUP_LENGTH_MAX);
 
     char *word = strtok(group_copy, " ");
     while (word != NULL) {
-        const int count = atoi(word);
+        const unsigned int count = atoi(word);
         word = strtok(NULL, ", ");
         remove_new_line(6, word);
         const color_t color = find_color(word);
-        if (count > target[color]) {
-            target[color] = count;
-        }
+        (*handler)(target, color, count);
         word = strtok(NULL, " ");
     }
 }
