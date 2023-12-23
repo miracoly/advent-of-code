@@ -76,13 +76,7 @@ static bool is_num_included(
            bottom_right || bottom_left;
 }
 
-int main(void) {
-    FILE *file = fopen("./input.txt", "r");
-    if (!file) return EXIT_FAILURE;
-
-    char buffer[LINES_MAX][LINE_LENGTH_MAX] = {0};
-    to_buffer(LINE_LENGTH_MAX, LINES_MAX, file, buffer);
-
+static int sum_part_numbers(const char buffer[LINES_MAX][LINE_LENGTH_MAX]) {
     unsigned int total = 0;
     for (size_t row = 0; row < LINES_MAX; ++row) {
         unsigned int current_num = 0;
@@ -109,6 +103,17 @@ int main(void) {
             }
         }
     }
+    return total;
+}
+
+int main(void) {
+    FILE *file = fopen("./input.txt", "r");
+    if (!file) return EXIT_FAILURE;
+
+    char buffer[LINES_MAX][LINE_LENGTH_MAX] = {0};
+    to_buffer(LINE_LENGTH_MAX, LINES_MAX, file, buffer);
+
+    unsigned int total = sum_part_numbers(buffer);
 
     printf("Result: %u", total);
 
