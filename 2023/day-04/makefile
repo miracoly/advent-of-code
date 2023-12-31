@@ -20,7 +20,7 @@ all: main.out
 
 main.out: ./*.c ./*.h
 	@echo Compiling $@
-	@$(CC) $(CFLAGS) ./main.c -o main.out
+	@$(CC) $(CFLAGS) ./main.c day_04.c -o main.out
 
 test: tests.out
 	@./tests.out
