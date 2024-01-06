@@ -1,9 +1,9 @@
+#include "day-04.h"
 #include <stdio.h>
 #include <stdlib.h>
-#include "day_04.h"
 
 int main(void) {
-    FILE *file = fopen("./input.txt", "r");
+    FILE *file = fopen("./day-04/input.txt", "r");
     if (!file) {
         perror("Could not open file 'input.txt'.");
         return EXIT_FAILURE;

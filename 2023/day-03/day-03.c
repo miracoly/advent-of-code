@@ -1,10 +1,7 @@
-#include "day_03.h"
 #include <stdlib.h>
 #include <stdio.h>
-#include <stddef.h>
 #include <ctype.h>
 #include <stdint.h>
-#include <string.h>
 #include <stdbool.h>
 
 #define LINES_MAX 140
@@ -212,15 +209,17 @@ static unsigned long sum_gear_ratios(const char buffer[LINES_MAX][LINE_LENGTH_MA
 }
 
 int main(void) {
-    FILE *file = fopen("./input.txt", "r");
+    FILE *file = fopen("./day-03/input.txt", "r");
     if (!file) return EXIT_FAILURE;
 
     char buffer[LINES_MAX][LINE_LENGTH_MAX] = {0};
     to_buffer(LINE_LENGTH_MAX, LINES_MAX, file, buffer);
 
-    unsigned long total = sum_gear_ratios(buffer);
+    unsigned long part_numbers = sum_part_numbers(buffer);
+    unsigned long gear_ratios = sum_gear_ratios(buffer);
 
-    printf("Result: %lu", total);
+    printf("Part numbers: %lu\n", part_numbers);
+    printf("Gear ratios: %lu\n", gear_ratios);
 
     fclose(file);
     return EXIT_SUCCESS;

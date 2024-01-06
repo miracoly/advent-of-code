@@ -1,11 +1,13 @@
-#include "day_01.h"
+#include "day-01.h"
 #include <stdlib.h>
 #include <stdio.h>
 #include <stddef.h>
 #include <ctype.h>
 #include <stdint.h>
 #include <string.h>
-#include <stdbool.h>
+
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wstringop-truncation"
 
 #define LINE_LENGTH_MAX 2048
 
@@ -17,12 +19,11 @@ static uint8_t lookup_number_text(char text[static 1]);
 
 static uint8_t char_to_int(char c);
 
-
 int main() {
-    FILE *file = fopen("./input.txt", "r");
+    FILE *file = fopen("./day-01/input.txt", "r");
     if (file == NULL) { return EXIT_FAILURE; }
 
-    printf("Result: %lu", get_calibration(file));
+    printf("Result: %lu\n", get_calibration(file));
 
     fclose(file);
     return EXIT_SUCCESS;
@@ -30,9 +31,8 @@ int main() {
 
 unsigned long get_calibration(FILE *file) {
     unsigned long calibration = 0;
-    while (!feof(file)) {
-        char line[LINE_LENGTH_MAX];
-        fgets(line, LINE_LENGTH_MAX, file);
+    char line[LINE_LENGTH_MAX] = {0};
+    while (fgets(line, LINE_LENGTH_MAX, file)) {
         calibration += get_calibration_of_line(line);
     }
     return calibration;
@@ -48,7 +48,7 @@ static uint8_t get_calibration_of_line(char line[static 1]) {
             continue;
         }
 
-        char potenzial_number[5];
+        char potenzial_number[6];
         strncpy(potenzial_number, line + i, 5);
         const uint8_t maybe_num = lookup_number_text(potenzial_number);
         if (UINT8_MAX - maybe_num) {
