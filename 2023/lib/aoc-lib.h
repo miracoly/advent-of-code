@@ -3,6 +3,6 @@
 
 #include <stddef.h>
 
-size_t aoc_split(size_t len, const char str[len], char* split_str[len]);
+size_t aoc_split(size_t n, char str[n], char* split_str[n], const char delimiter[static 1]);
 
 #endif //INC_2023_AOC_LIB_H

@@ -2,6 +2,7 @@
 #include <stdio.h>
 
 unsigned int get_points_per_card(const char card[static 1]) {
+    printf("%s", card);
     return 1;
 }
 
