@@ -51,7 +51,7 @@ day-04-test: day-04-tests.out
 
 day-04-tests.out: ./day-04/*.c ./day-04/*.h
 	@echo Compiling $@
-	@$(CC) $(CFLAGS) ./day-04/day-04.c ./day-04/day-04-tests.c -o day-04-tests.out $(LIBS)
+	@$(CC) $(CFLAGS) ./day-04/day-04.c ./day-04/day-04-tests.c ./lib/*.c -o day-04-tests.out $(LIBS)
 
 lib-test: lib-tests.out
 	@./lib-tests.out
