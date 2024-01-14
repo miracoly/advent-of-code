@@ -73,8 +73,31 @@ Test(aoc_trim, test_2) {
     cr_expect(eq(str, before, expected));
 }
 
-Test(aoc_reduce_spaces, test_1, .disabled = true) {
-    char before[] = " 71  88   83 5 15   54 89 55 69 79   ";
+Test(aoc_reduce_spaces, empty_string) {
+    char before[] = "";
+    const size_t len = strlen(before);
+    char expected[] = "";
+
+    const size_t final_len = aoc_reduce_spaces(len, before);
+
+    cr_expect(eq(uint, final_len, strlen(expected)));
+    cr_expect(eq(str, before, expected));
+}
+
+Test(aoc_reduce_spaces, test_1) {
+    char before[] = "71  88   83 5 15   54 89 55 69 79";
+    const size_t len = strlen(before);
+    char expected[] = "71 88 83 5 15 54 89 55 69 79";
+
+    const size_t final_len = aoc_reduce_spaces(len, before);
+
+    cr_expect(eq(uint, final_len, strlen(expected)));
+    cr_expect(eq(str, before, expected));
+}
+
+
+Test(aoc_reduce_spaces, test_2) {
+    char before[] = "   71  88   83 5 15   54 89 55 69 79   ";
     const size_t len = strlen(before);
     char expected[] = "71 88 83 5 15 54 89 55 69 79";
 

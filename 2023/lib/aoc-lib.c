@@ -39,14 +39,16 @@ size_t aoc_trim(size_t aoc_n, char aoc_str[aoc_n]) {
 }
 
 size_t aoc_reduce_spaces(size_t aoc_n, char aoc_str[aoc_n]) {
+    size_t n_trimmed = aoc_trim(aoc_n, aoc_str);
     size_t len = 0;
 
-    for (size_t i = 0; i < aoc_n; ++i) {
+    for (size_t i = 0; i < (n_trimmed); ++i) {
         if (isspace(aoc_str[i]) && isspace(aoc_str[i + 1])) continue;
 
         aoc_str[len] = aoc_str[i];
         len++;
     }
+    aoc_str[len] = '\0';
 
     return len;
 }
