@@ -3,7 +3,7 @@
 #include <stdlib.h>
 
 int main(void) {
-    FILE *file = fopen("./day-04/input.txt", "r");
+    FILE* file = fopen("./day-04/input.txt", "r");
     if (!file) {
         perror("Could not open file 'input.txt'.");
         return EXIT_FAILURE;
