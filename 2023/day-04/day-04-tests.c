@@ -9,7 +9,7 @@ Test(get_points_per_card, card_1) {
     cr_expect(eq(uint, points, exp2(10 - 1)));
 }
 
-Test(get_points_per_card, card_2, .disabled = true) {
+Test(get_points_per_card, card_2) {
     char card[] = "Card   2: 33 11 66 48 67 95 78 71 98 65 | 66  2  1 59 77 95 61 71  8 38 18 62 10 65 53 17 75 92 64 50 67 21 51 78 98";
     const unsigned int points = get_points_per_card(card);
     cr_expect(eq(uint, points, exp2(7 - 1)));

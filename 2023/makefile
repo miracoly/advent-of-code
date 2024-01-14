@@ -8,7 +8,8 @@ CFLAGS += -Werror
 CFLAGS += -Wmissing-declarations
 CFLAGS += -DUNITY_SUPPORT_64 -DUNITY_OUTPUT_COLOR
 
-LIBS = -lcriterion
+LIBS = -lm
+TEST_LIBS = -lcriterion -lm
 
 ASANFLAGS  = -fsanitize=address
 ASANFLAGS += -fno-common
@@ -44,20 +45,20 @@ day-04: day-04.out
 
 day-04.out: ./day-04/*.c ./day-04/*.h
 	@echo Compiling $@
-	@$(CC) $(CFLAGS) ./day-04/main.c ./day-04/day-04.c -o day-04.out
+	@$(CC) $(CFLAGS) ./day-04/main.c ./day-04/day-04.c ./lib/aoc-lib.c -o day-04.out $(LIBS)
 
 day-04-test: day-04-tests.out
 	@./day-04-tests.out
 
 day-04-tests.out: ./day-04/*.c ./day-04/*.h
 	@echo Compiling $@
-	@$(CC) $(CFLAGS) ./day-04/day-04.c ./day-04/day-04-tests.c ./lib/*.c -o day-04-tests.out $(LIBS)
+	@$(CC) $(CFLAGS) ./day-04/day-04.c ./day-04/day-04-tests.c ./lib/aoc-lib.c -o day-04-tests.out $(TESTLIBS)
 
 lib-test: lib-tests.out
 	@./lib-tests.out
 
 lib-tests.out: ./lib/*.c ./lib/*.h
-	@$(CC) $(CFLAGS) ./lib/aoc-lib-tests.c ./lib/aoc-lib.c -o lib-tests.out $(LIBS)
+	@$(CC) $(CFLAGS) ./lib/aoc-lib-tests.c ./lib/aoc-lib.c -o lib-tests.out $(TESTLIBS)
 
 .PHONY: clean
 clean:

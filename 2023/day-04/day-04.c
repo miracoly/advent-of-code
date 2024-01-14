@@ -1,9 +1,31 @@
 #include "day-04.h"
+#include "../lib/aoc-lib.h"
 #include <stdio.h>
 #include <string.h>
 #include <assert.h>
 #include <stdlib.h>
-#include "../lib/aoc-lib.h"
+#include <tgmath.h>
+#include <stdbool.h>
+
+static bool contains(unsigned long num, size_t n_win, unsigned long win_nums[n_win]) {
+    for (size_t i = 0; i < n_win; ++i) {
+        if (num == win_nums[i]) return true;
+    }
+    return false;
+}
+
+static unsigned long get_points(size_t n_win,
+                                unsigned long win_nums[n_win],
+                                size_t n_own,
+                                unsigned long own_nums[n_own]) {
+    size_t count_wins = 0;
+    for (size_t i = 0; i < n_own; ++i) {
+        if (contains(own_nums[i], n_win, win_nums)) {
+            count_wins++;
+        }
+    }
+    return exp2(count_wins - 1);
+}
 
 unsigned int get_points_per_card(char card[static 1]) {
     char* split1[strlen(card)];
@@ -26,12 +48,6 @@ unsigned int get_points_per_card(char card[static 1]) {
         winning_nums[i] = strtoul(split3[i], 0, 10);
     }
 
-    for (size_t i = 0; i < n_winning_nums; ++i) {
-        printf("%lu ", winning_nums[i]);
-    }
-    printf("\n");
-
-
     char* str_nums_you_have = split2[1];
     const size_t len_num_you_have = aoc_reduce_spaces(strlen(str_nums_you_have), str_nums_you_have);
 
@@ -44,12 +60,7 @@ unsigned int get_points_per_card(char card[static 1]) {
         nums_you_have[i] = strtoul(split4[i], 0, 10);
     }
 
-    for (size_t i = 0; i < n_nums_you_have; ++i) {
-        printf("%lu ", nums_you_have[i]);
-    }
-    printf("\n");
-
-    return len_winning_nums;
+    return get_points(n_winning_nums, winning_nums, n_nums_you_have, nums_you_have);
 }
 
 unsigned int challenge_1(FILE* file) {
