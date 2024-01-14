@@ -19,7 +19,7 @@ unsigned int get_points_per_card(char card[static 1]) {
 
     char* split3[strlen(str_winning_nums)];
     const size_t n_winning_nums =
-            aoc_split(strlen(str_winning_nums), str_winning_nums, split3, " ");
+            aoc_split(len_winning_nums, str_winning_nums, split3, " ");
 
     unsigned long winning_nums[n_winning_nums];
     for (size_t i = 0; i < n_winning_nums; ++i) {
@@ -28,6 +28,24 @@ unsigned int get_points_per_card(char card[static 1]) {
 
     for (size_t i = 0; i < n_winning_nums; ++i) {
         printf("%lu ", winning_nums[i]);
+    }
+    printf("\n");
+
+
+    char* str_nums_you_have = split2[1];
+    const size_t len_num_you_have = aoc_reduce_spaces(strlen(str_nums_you_have), str_nums_you_have);
+
+    char* split4[strlen(str_nums_you_have)];
+    const size_t n_nums_you_have =
+            aoc_split(len_num_you_have, str_nums_you_have, split4, " ");
+
+    unsigned long nums_you_have[n_nums_you_have];
+    for (size_t i = 0; i < n_nums_you_have; ++i) {
+        nums_you_have[i] = strtoul(split4[i], 0, 10);
+    }
+
+    for (size_t i = 0; i < n_nums_you_have; ++i) {
+        printf("%lu ", nums_you_have[i]);
     }
     printf("\n");
 
