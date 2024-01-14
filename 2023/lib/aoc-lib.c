@@ -2,6 +2,14 @@
 #include <string.h>
 #include <ctype.h>
 
+/**
+ * Split string into list of string.
+ * @param aoc_n Length of \p aoc_str
+ * @param aoc_str String to split
+ * @param aoc_split_str List of strings to hold result
+ * @param aoc_delimiter Delimiter to split on
+ * @return List of split strings
+ */
 size_t aoc_split(size_t aoc_n,
                  char aoc_str[aoc_n],
                  char* aoc_split_str[aoc_n],
@@ -18,9 +26,13 @@ size_t aoc_split(size_t aoc_n,
     return len;
 }
 
+/**
+ * Removes leading and trailing white space.
+ * @param aoc_n Length of \p aoc_str
+ * @param aoc_str String to trim
+ * @return New length of trimmed string
+ */
 size_t aoc_trim(size_t aoc_n, char aoc_str[aoc_n]) {
-    if (!aoc_n) return 0;
-
     size_t l = 0;
     size_t r = aoc_n - 1;
 
@@ -38,6 +50,12 @@ size_t aoc_trim(size_t aoc_n, char aoc_str[aoc_n]) {
     return len;
 }
 
+/**
+ * Trims and reduces consecutive spaces to one space.
+ * @param aoc_n Length of \p aoc_str
+ * @param aoc_str String to clean
+ * @return New length of reduced string
+ */
 size_t aoc_reduce_spaces(size_t aoc_n, char aoc_str[aoc_n]) {
     size_t n_trimmed = aoc_trim(aoc_n, aoc_str);
     size_t len = 0;
