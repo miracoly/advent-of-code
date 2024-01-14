@@ -2,6 +2,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <assert.h>
+#include <stdlib.h>
 #include "../lib/aoc-lib.h"
 
 unsigned int get_points_per_card(char card[static 1]) {
@@ -13,10 +14,23 @@ unsigned int get_points_per_card(char card[static 1]) {
     const size_t len_split2 = aoc_split(len_split1, split1[1], split2, "|");
     assert(len_split2 == 2);
 
-    const size_t len_winning_nums = aoc_reduce_spaces(strlen(split2[0]), split2[0]);
-//    size_t len_after_split = aoc_split(len_after_clean, card, split_str, " ");
+    char* str_winning_nums = split2[0];
+    const size_t len_winning_nums = aoc_reduce_spaces(strlen(str_winning_nums), str_winning_nums);
 
-    printf("%s\n", split2[0]);
+    char* split3[strlen(str_winning_nums)];
+    const size_t n_winning_nums =
+            aoc_split(strlen(str_winning_nums), str_winning_nums, split3, " ");
+
+    unsigned long winning_nums[n_winning_nums];
+    for (size_t i = 0; i < n_winning_nums; ++i) {
+        winning_nums[i] = strtoul(split3[i], 0, 10);
+    }
+
+    for (size_t i = 0; i < n_winning_nums; ++i) {
+        printf("%lu ", winning_nums[i]);
+    }
+    printf("\n");
+
     return len_winning_nums;
 }
 
